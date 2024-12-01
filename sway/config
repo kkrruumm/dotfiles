@@ -233,8 +233,6 @@ bindsym $mod+r mode "resize"
 #}
 
 output HDMI-A-4 pos 0 0 res 2560x1440
-output DP-4 pos 2560 0 res 2560x1440@169.831Hz
-output DP-4 adaptive_sync on
 
 gaps inner 5 
 gaps outer 5 
@@ -243,7 +241,10 @@ default_floating_border pixel 3
 
 exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
 exec pipewire & pipewire-pulse
+exec /usr/libexec/polkit-gnome-authentication-agent-1
 exec /usr/libexec/xdg-desktop-portal -r & /usr/libexec/xdg-desktop-portal-wlr & /usr/libexec/xdg-desktop-portal-gtk
+
+exec_always --no-startup-id gnome-keyring-daemon --start
 
 exec_always waybar
 
@@ -275,8 +276,6 @@ client.background       #ffffff
 shadows enable
 shadow_blur_radius 12
 shadow_color #0000009F
-
-corner_radius 3 
 
 layer_effects "waybar" shadows enable
 layer_effects "wofi" shadows enable
