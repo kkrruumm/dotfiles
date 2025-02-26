@@ -271,15 +271,4 @@ client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 
 client.background       #ffffff
 
-# Eyecandy, swayfx only
-
-shadows enable
-shadow_blur_radius 12
-shadow_color #0000009F
-
-layer_effects "waybar" shadows enable
-layer_effects "wofi" shadows enable
-
-default_dim_inactive 0.2
-
 include /etc/sway/config.d/*
