@@ -26,7 +26,7 @@ bindsym $mod+Tab exec ~/.config/wofi/windowlist.sh
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Wallpapers/wallhaven-5wr3m7.jpg fill
+output * bg ~/Pictures/Wallpapers/wallhaven-o5zedl.jpg fill
 #
 # Example configuration:
 #
@@ -75,7 +75,7 @@ output * bg ~/Pictures/Wallpapers/wallhaven-5wr3m7.jpg fill
     bindsym $mod+d exec $menu
 
     # Screenshots with grimshot
-    bindsym $mod+Print exec /usr/bin/grimshot copy area
+    bindsym $mod+Print exec /usr/bin/grimshot savecopy area
 
     # Lockscreen
     bindsym $mod+o exec swaylock -u -f -c 000000
@@ -232,7 +232,11 @@ bindsym $mod+r mode "resize"
 #    }
 #}
 
-output HDMI-A-4 pos 0 0 res 2560x1440
+output DP-5 pos 2560 0 res 2560x1440@240.000Hz
+workspace 1 output DP-5
+
+output HDMI-A-2 pos 0 0 res 2560x1440
+workspace 2 output HDMI-A-2
 
 gaps inner 5 
 gaps outer 5 
