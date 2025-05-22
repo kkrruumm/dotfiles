@@ -54,11 +54,11 @@
         "format": "DISK: {used} "
     },
     "temperature": {
-        "hwmon-path": ["/sys/class/hwmon/hwmon5/temp1_input"],
+        "hwmon-path": ["/sys/class/hwmon/hwmon3/temp1_input"],
         "format": "C: {temperatureC}°C "
     },
     "temperature#gpu": {
-        "hwmon-path": ["/sys/class/hwmon/hwmon2/temp2_input"],
+        "hwmon-path": ["/sys/class/hwmon/hwmon5/temp2_input"],
         "format": "G: {temperatureC}°C " 
     }
 }
