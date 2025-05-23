@@ -15,18 +15,14 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term foot
-# Your preferred application launcher
-# Note: pass the final command to swaymsg so that the resulting window can be opened
-# on the original workspace that the command was run on.
-set $menu wofi --show drun
 
 # Window list instead of cycling through scratchpad contents
-bindsym $mod+Tab exec ~/.config/wofi/windowlist.sh
+bindsym $mod+Tab exec ~/.config/fuzzel/windowlist.sh
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Wallpapers/wallhaven-o5zedl.jpg fill
+output * bg ~/Pictures/Wallpapers/rickgarage.jpg fill
 #
 # Example configuration:
 #
@@ -72,7 +68,8 @@ output * bg ~/Pictures/Wallpapers/wallhaven-o5zedl.jpg fill
     bindsym $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu
+    # bindsym $mod+d exec wofi --show drun 
+    bindsym $mod+d exec fuzzel
 
     # Screenshots with grimshot
     bindsym $mod+Print exec /usr/bin/grimshot savecopy area
@@ -247,9 +244,8 @@ exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESK
 exec pipewire & pipewire-pulse
 exec /usr/libexec/polkit-gnome-authentication-agent-1
 exec /usr/libexec/xdg-desktop-portal -r & /usr/libexec/xdg-desktop-portal-wlr & /usr/libexec/xdg-desktop-portal-gtk
-
+exec fnott
 exec_always --no-startup-id gnome-keyring-daemon --start
-
 exec_always waybar
 
 seat seat0 xcursor_theme Bibata-Original-Classic 24
