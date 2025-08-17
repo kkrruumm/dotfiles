@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# iw4x doesn't like running with flatpak gamescope for w/e reason
+gamescope --backend wayland -W 2560 -H 1440 -r 240 --force-grab-cursor --rt -- flatpak run com.valvesoftware.Steam

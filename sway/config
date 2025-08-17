@@ -57,6 +57,13 @@ output * bg ~/Pictures/Wallpapers/rickgarage.jpg fill
 # You can get the names of your inputs by running: swaymsg -t get_inputs
 # Read `man 5 sway-input` for more information about this section.
 
+# This is a temporary fix for valve breaking raw input on cs2
+# TODO: REMOVE ME WHEN FIXED(?)
+input "type:pointer" {
+	accel_profile "flat"
+	pointer_accel 0
+}
+
 ### Key bindings
 #
 # Basics:
@@ -235,13 +242,13 @@ workspace 1 output DP-5
 output HDMI-A-2 pos 0 0 res 2560x1440
 workspace 2 output HDMI-A-2
 
-gaps inner 5
-gaps outer 5
+gaps inner 3
+gaps outer 3
 default_border pixel 2
 default_floating_border pixel 2
 
 exec dbus-update-activation-environment DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-exec pipewire & pipewire-pulse
+exec /usr/libexec/pipewire-launcher 
 exec /usr/libexec/polkit-gnome-authentication-agent-1
 exec /usr/libexec/xdg-desktop-portal -r & /usr/libexec/xdg-desktop-portal-wlr & /usr/libexec/xdg-desktop-portal-gtk
 exec fnott
