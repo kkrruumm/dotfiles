@@ -1,0 +1,5 @@
+#!/bin/sh
+
+pkill -u "${USER}" -fx waybar 1>/dev/null 2>&1
+
+waybar &

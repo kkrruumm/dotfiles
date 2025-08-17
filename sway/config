@@ -79,7 +79,8 @@ input "type:pointer" {
     bindsym $mod+d exec fuzzel
 
     # Screenshots with grimshot
-    bindsym $mod+Print exec /usr/bin/grimshot savecopy area
+    bindsym Control+Print exec '/usr/bin/grimshot --notify savecopy output'
+    bindsym $mod+Print exec '/usr/bin/grimshot --notify savecopy area'
 
     # Lockscreen
     bindsym $mod+o exec swaylock -u -f -c 000000
@@ -253,7 +254,7 @@ exec /usr/libexec/polkit-gnome-authentication-agent-1
 exec /usr/libexec/xdg-desktop-portal -r & /usr/libexec/xdg-desktop-portal-wlr & /usr/libexec/xdg-desktop-portal-gtk
 exec fnott
 exec_always --no-startup-id gnome-keyring-daemon --start
-exec_always waybar
+exec_always /usr/local/bin/waybar-launcher
 
 seat seat0 xcursor_theme Bibata-Original-Classic 24
 
