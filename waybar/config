@@ -5,16 +5,21 @@
     // "width": 1280, // Waybar width
     "spacing": 2, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad"],
-    "modules-center": ["sway/window"],
-    "modules-right": ["temperature#gpu", "temperature", "disk", "memory", "cpu", "clock", "tray"],
+    "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "sway/window"],
+    "modules-center": ["clock"],
+    "modules-right": ["temperature#gpu", "temperature", "disk", "memory", "cpu", "tray"],
     "sway/mode": {
         "format": "<span style=\"italic\">{}</span>"
     },
+    "sway/window": {
+        "format": "{title}",
+        "format-icons": ["| "],
+        "max-length": "30"
+    },
     "sway/scratchpad": {
-        "format": "{icon} {count}",
+        "format": "{icon} {count} |",
         "show-empty": false,
-        "format-icons": ["S:"],
+        "format-icons": ["| S:"],
         "tooltip": true,
         "tooltip-format": "{app}: {title}"
     },
@@ -23,7 +28,7 @@
         "spacing": 10
     },
     "clock": {
-        "format": "{:%I:%M %p | %Y-%m-%d} |",
+        "format": "{:%I:%M %p | %Y-%m-%d}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
     "cpu": {
@@ -32,21 +37,20 @@
     },
     "memory": {
         "format": "MEM: {used}GiB |",
-	"tooltip": false
+	    "tooltip": false
     },
     "disk": {
         "format": "DISK: {used} |",
-	"tooltip": false
+	    "tooltip": false
     },
     "temperature": {
         "hwmon-path": ["/sys/class/hwmon/hwmon3/temp1_input"],
         "format": "C: {temperatureC}°C |",
-	"tooltip": false
+    	"tooltip": false
     },
     "temperature#gpu": {
         "hwmon-path": ["/sys/class/hwmon/hwmon4/temp2_input"],
         "format": "G: {temperatureC}°C |",
-	"tooltip": false
+	    "tooltip": false
     }
 }
-
