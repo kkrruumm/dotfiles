@@ -119,8 +119,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(indent-tabs-mode nil) ;; prefer spaces over tabs
+ '(tab-width 2) ;; logical default when a literal tab appears
  '(custom-safe-themes
-   '("9554d0a94aa131a7eb89e638b1fc4312c5796b55563e41bc6885ddeeee82793c"
+   '("4b53f1da21cbd4e649ad3328f38798efb1473a21132e0fe6407b34751cf8c0b0"
      default))
  '(package-selected-packages nil))
 (custom-set-faces
@@ -131,7 +133,7 @@
  '(line-number ((t (:inherit nil)))))
 
 (electric-pair-mode 1) ;; auto pairs
-(electric-indent-mode -1) ;; disable indenting
+;;(electric-indent-mode -1) ;; disable indenting
 
 ;; visual tweaks
 (menu-bar-mode -1)
