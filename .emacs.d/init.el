@@ -1,3 +1,9 @@
+;;; init.el --- -*- lexical-binding: t -*-
+
+;;; Commentary:
+;;
+
+;;; Code:
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/"))
@@ -121,6 +127,12 @@
  ;; If there is more than one, they won't work right.
  '(indent-tabs-mode nil) ;; prefer spaces over tabs
  '(tab-width 2) ;; logical default when a literal tab appears
+ '(make-backup-files nil) ;; disables annoying `file~`
+ '(auto-save-default nil) ;; disables annoying `#file#`
+ `(delete-auto-save-files t)
+ `(create-lockfiles nil)
+ `(find-file-visit-truename t) ;; resolve symlinks
+ `(large-file-warning-threshold nil) ;; don't warn on large files
  '(custom-safe-themes
    '("4b53f1da21cbd4e649ad3328f38798efb1473a21132e0fe6407b34751cf8c0b0"
      default))
@@ -150,8 +162,7 @@
 (setq-default line-spacing 0.15)
 
 ;; actually scroll instead of changing pages
-(setq scroll-conservatively 10
-      scroll-margin 15)
+(setq scroll-conservatively 101)
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'bummer t)
