@@ -12,9 +12,10 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 # Fix sway display flickering
 # Defaults to gles2, vulkan temporarily fixes flickering
 # in games like Counter-Strike 2
-#export WLR_RENDERER=vulkan
+# this also fixes choppy obs capture with certain games
+export WLR_RENDERER=vulkan
 
 # Default to 6900xt for sway rendering
-export WLR_DRM_DEVICES='/dev/dri/card1'
+#export WLR_DRM_DEVICES='/dev/dri/card1'
 
 exec dbus-run-session sway "$@"

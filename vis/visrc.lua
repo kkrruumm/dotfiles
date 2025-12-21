@@ -4,18 +4,39 @@ require('plugins/vis-cursors')
 require('plugins/vis-autopairs')
 require('plugins/vis-backspace')
 require('plugins/vis-sneak')
+require('plugins/vis-lint') -- :lint to execute
 plugin_vis_open = require('plugins/vis-fzf-open')
-
 plugin_vis_open.fzf_args = "--preview='bat -f -p {}' --preview-border='sharp'"
+
+plugin_vis_mru = require('plugins/vis-fzf-mru')
+plugin_vis_mru.fzfmru_args = "--preview='bat -f -p {}' --preview-border='sharp'"
+plugin_vis_mru.fzfmru_filepath = "/home/kris/.cache/.vismru"
+plugin_vis_mru.fzfmru_history = 40
+
+--by default this is on the keybind <C-w>e
+--<C-w>d to disable
+spellcheck = require('plugins/vis-spellcheck')
+spellcheck.default_lang = 'en_US'
+spellcheck.cmd = "aspell -l %s -a"
+spellcheck.list_cmd = "aspell list -l %s -a"
 
 local colorizer = require('plugins/vis-colorizer')
 colorizer.six = true
 
 vis.events.subscribe(vis.events.INIT, function()
     -- Global configuration options
-    vis:command('map! normal <C-p> :fzf<Enter>')
     vis:command('set theme bummer')
     vis:command('set autoindent')
+
+    --file switcher
+    vis:map(vis.modes.INSERT, '<C-p>f', ':fzf<Enter>')
+    vis:map(vis.modes.NORMAL, '<C-p>f', ':fzf<Enter>')
+    vis:map(vis.modes.VISUAL, '<C-p>f', ':fzf<Enter>')
+
+    --recent files
+    vis:map(vis.modes.INSERT, '<C-p>r', ':fzfmru<Enter>')
+    vis:map(vis.modes.NORMAL, '<C-p>r', ':fzfmru<Enter>')
+    vis:map(vis.modes.VISUAL, '<C-p>r', ':fzfmru<Enter>')
 
     --shut up mom i'll move around in insert mode if i want
     --additionally, shut up mom i'll use arrow keys if i want
