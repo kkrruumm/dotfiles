@@ -1,4 +1,4 @@
-;;; bummer-theme.el --- Theme
+;;; bummer.el --- Theme
 
 ;; Copyright (C) 2025 , krum
 
@@ -36,17 +36,17 @@
       (fg6 "#ffffff")
       (bg1 "#070707")
       (bg2 "#121212")
-      (bg3 "#2c2c2c")
-      (bg4 "#404040")
+      (bg3 "#303030")
+      (bg4 "#505050")
       (miscbg "#121212")
       (builtin "#71d37c")
-      (keyword "#d8bd4e")
-      (const   "#ff9b7b")
-      (comment "#595959")
-      (func    "#00cfff")
-      (str     "#E66868")
-      (type    "#ff92d4")
-      (var     "#bab2ff")
+      (keyword "#e1a3ee")
+      (const   "#eda987")
+      (comment "#505050")
+      (func    "#6fc2ef")
+      (str     "#acc267")
+      (type    "#ddb26f")
+      (var     "#6fc2ef")
       (selection "#434343")
       (warning   "#fa0c0c")
       (warning2  "#f66151")
@@ -306,4 +306,4 @@
 ;; no-byte-compile: t
 ;; End:
 
-;;; bummer-theme.el ends here
+;;; bummer.el ends here
