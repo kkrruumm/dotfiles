@@ -6,12 +6,27 @@
 ;;; Code:
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
-
+    '("melpa" . "https://melpa.org/packages/")
+    '("elpa" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
 ;; uncomment when adding packages or etc
-;;(package-refresh-contents)
+;; (package-refresh-contents)
+
+;; scope lines
+(unless (package-installed-p 'indent-bars)
+  (package-install 'indent-bars))
+
+;; rainbow gamer vomit ultra nacho supreme
+(unless (package-installed-p 'rainbow-mode)
+  (package-install 'rainbow-mode))
+
+(use-package indent-bars
+  :hook ((python-mode yaml-mode go-mode lua-mode nix-mode bash-mode sh-mode) . indent-bars-mode))
+
+(define-globalized-minor-mode global-rainbow-mode rainbow-mode
+  (lambda () (rainbow-mode 1)))
+(global-rainbow-mode 1)
 
 ;; gitgutter
 (unless (package-installed-p 'git-gutter)
@@ -125,22 +140,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(make-backup-files nil) ;; disables annoying `file~`
- '(auto-save-default nil) ;; disables annoying `#file#`
- `(delete-auto-save-files t)
- `(create-lockfiles nil)
- `(find-file-visit-truename t) ;; resolve symlinks
- `(large-file-warning-threshold nil) ;; don't warn on large files
+ '(auto-save-default nil)
+ '(create-lockfiles nil)
  '(custom-safe-themes
    '("4b53f1da21cbd4e649ad3328f38798efb1473a21132e0fe6407b34751cf8c0b0"
      default))
+ '(delete-auto-save-files t)
+ '(find-file-visit-truename t)
+ '(large-file-warning-threshold nil)
+ '(make-backup-files nil)
  '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(line-number ((t (:inherit nil)))))
 
 (electric-pair-mode 1) ;; auto pairs
 ;;(electric-indent-mode -1) ;; disable indenting
@@ -154,9 +163,9 @@
 (global-visual-line-mode t)
 
 (set-face-attribute 'font-lock-comment-face nil
-		    :slant 'italic)
+    :slant 'italic)
 (set-face-attribute 'font-lock-keyword-face nil
-		    :slant 'italic)
+    :slant 'italic)
 (setq-default line-spacing 0.15)
 
 ;; actually scroll instead of changing pages

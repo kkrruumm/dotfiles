@@ -34,22 +34,24 @@
       (fg3 "#d6d6d6")
       (fg4 "#c2c2c2")
       (fg6 "#ffffff")
-      (bg1 "#070707")
+      (bg1 "#060606")
       (bg2 "#121212")
       (bg3 "#303030")
       (bg4 "#505050")
       (miscbg "#121212")
       (builtin "#71d37c")
       (keyword "#e1a3ee")
-      (const   "#eda987")
+      (const   "#fb9fb1")
       (comment "#505050")
       (func    "#6fc2ef")
       (str     "#acc267")
       (type    "#ddb26f")
-      (var     "#6fc2ef")
+      (var     "#fb9fb1")
       (selection "#434343")
       (warning   "#fa0c0c")
       (warning2  "#f66151")
+      (modelinefg "#ebebeb")
+      (modelinefginactive "#202020")
       (unspec   (when (>= emacs-major-version 29) 'unspecified)))
   (custom-theme-set-faces
    'bummer
@@ -67,15 +69,15 @@
    `(font-lock-variable-name-face ((,class (:foreground ,var))))
    `(font-lock-warning-face ((,class (:foreground ,warning :background ,bg2))))
    `(term-color-black ((,class (:foreground ,fg2 :background ,unspec))))
-   ;; `(region ((,class (:background ,fg1 :foreground ,bg1))))
+   `(region ((,class (:background ,fg1 :foreground ,bg1))))
    `(region ((,class (:background ,selection))))
    `(highlight ((,class (:foreground ,fg3 :background ,bg3))))
-	 `(hl-line ((,class (:background  ,bg2))))
+	 `(hl-line ((,class (:foreground ,fg3 :background  ,bg2))))
 	 `(fringe ((,class (:background ,bg2 :foreground ,fg4))))
-	 `(cursor ((,class (:background ,fg4))))
+	 `(cursor ((,class (:background ,fg1))))
    `(isearch ((,class (:bold t :foreground ,warning :background ,bg3))))
-   `(mode-line ((,class (:box (:line-width 1 :color nil) :bold t :foreground ,fg4 :background ,bg2))))
-   `(mode-line-inactive ((,class (:box (:line-width 1 :color nil :style pressed-button) :foreground ,var :background ,bg1 :weight normal))))
+   ;;`(mode-line ((,class (:box (:line-width 1 :color nil) :bold t :foreground ,fg4 :background ,bg2))))
+   `(mode-line-inactive ((,class (:box (:line-width 1 :color nil :style pressed-button) :foreground ,bg3 :background ,bg1 :weight normal))))
    `(mode-line-buffer-id ((,class (:bold t :foreground ,func :background ,unspec))))
 	 `(mode-line-highlight ((,class (:foreground ,keyword :box nil :weight bold))))
    `(mode-line-emphasis ((,class (:foreground ,fg1))))
@@ -244,9 +246,10 @@
    `(jde-java-font-lock-modifier-face ((t (:foreground ,fg2))))
    `(jde-jave-font-lock-protected-face ((t (:foreground ,keyword))))
    `(jde-java-font-lock-number-face ((t (:foreground ,var))))
-   `(doom-modeline ((t (:background ,miscbg))))
-   `(line-number ((t (:background ,bg1))))
+   `(doom-modeline ((t (:background ,miscbg :foreground ,modelinefg))))
+   `(line-number ((t (:background ,bg1 :foreground ,bg3))))
    `(yas-field-highlight-face ((t (:background ,selection)))))
+  
    ;; Legacy
    (if (< emacs-major-version 22)
        (custom-theme-set-faces
@@ -260,7 +263,7 @@
    (when (>= emacs-major-version 26)
      (custom-theme-set-faces
       'bummer
-      `(line-number ((t (:inherit fringe))))
+      `(line-number ((t (:inherit fringe :foreground ,bg3))))
       `(line-number-current-line ((t (:inherit fringe :foreground ,fg6 :weight bold))))))
 
   ;; emacs >= 27.1
@@ -275,7 +278,7 @@
  (when (>= emacs-major-version 28)
     (custom-theme-set-faces
      'bummer
-     `(line-number ((t (:inherit fringe))))
+     `(line-number ((t (:inherit fringe :foreground ,bg3))))
      `(line-number-current-line ((t (:inherit fringe :foreground ,fg6 :weight bold))))))
 ;; emacs >= 27.1
 (when (>= emacs-major-version 27)
@@ -300,10 +303,15 @@
   (add-to-list 'custom-theme-load-path
                (file-name-as-directory (file-name-directory load-file-name))))
 
-(provide-theme 'bummer)
+;; flycheck stuff
+(custom-set-faces
+ '(flycheck-info ((t (:underline (:color "black" :style wave) :foreground unspecified))))
+ '(flycheck-error ((t (:underline (:color "black" :style wave) :foreground unspecified))))
+ '(flycheck-warning ((t (:underline (:color "black" :style wave) :foreground unspecified)))))
 
 ;; Local Variables:
 ;; no-byte-compile: t
 ;; End:
 
-;;; bummer.el ends here
+(provide 'bummer-theme)
+;;; bummer-theme.el ends here
