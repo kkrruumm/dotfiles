@@ -39,6 +39,11 @@
 ;; less conservative highlighting level
 (setq treesit-font-lock-level 4)
 
+;; spell checking
+(add-hook 'text-mode-hook 'flyspell-mode) ;; spellcheck for org, markdown, all that
+(add-hook 'find-file-hook (lambda () (when (eq major-mode 'fundamental-mode) (flyspell-mode 1)))) ;; fundamental mode, so applies to mdx and various other non coding things
+(add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; this spellchecks only comments and strings if checking code
+
 ;; scope lines
 (unless (package-installed-p 'indent-bars)
   (package-install 'indent-bars))
