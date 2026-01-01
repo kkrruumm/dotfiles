@@ -187,6 +187,9 @@
  "TAB TAB" '(comment-line :wl "Comment lines")
 )
 
+;; allows me to hit escape twice to exit M-x as opposed to using C-g
+(global-set-key (kbd "ESC <escape>") (kbd "C-g"))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
