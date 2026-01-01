@@ -10,20 +10,44 @@
     '("elpa" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
-;; uncomment when adding packages or etc
+;; uncomment when adding packages or if this is a new emacs installation
 ;; (package-refresh-contents)
+
+;; wacky performance!!
+;; increase GC threshold for startup
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max 1048576)
+
+;; disable resize frames since we're TUI only
+(setq frame-inhibit-implied-resize t)
+
+;; let there be highlight (this is only really here for lua)
+(unless (package-installed-p 'treesit-auto)
+  (package-install 'treesit-auto))
+
+;; disabling treesit-auto so it doesn't try to pull in anything else post-lua
+(add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode)) ;; this explicitly enables treesitter for lua, without treesitter lua is not well highlighted
+
+;; this should be temporarily reenabled if this is a new emacs installation
+;;(use-package treesit-auto
+;;  :custom
+;;  (treesit-auto-install 'prompt)
+;;  :config
+;;  (treesit-auto-add-to-auto-mode-alist 'all)
+;;  (global-treesit-auto-mode))
+
+;; less conservative highlighting level
+(setq treesit-font-lock-level 4)
 
 ;; scope lines
 (unless (package-installed-p 'indent-bars)
   (package-install 'indent-bars))
+(use-package indent-bars
+  :hook ((python-mode yaml-mode go-mode lua-mode nix-mode bash-mode sh-mode lua-ts-mode) . indent-bars-mode))
 
 ;; rainbow gamer vomit ultra nacho supreme
 (unless (package-installed-p 'rainbow-mode)
   (package-install 'rainbow-mode))
-
-(use-package indent-bars
-  :hook ((python-mode yaml-mode go-mode lua-mode nix-mode bash-mode sh-mode) . indent-bars-mode))
-
 (define-globalized-minor-mode global-rainbow-mode rainbow-mode
   (lambda () (rainbow-mode 1)))
 (global-rainbow-mode 1)
@@ -48,6 +72,7 @@
   (package-install 'doom-modeline))
 (doom-modeline-mode 1)
 (setq doom-modeline-total-line-number 1)
+(setq doom-modeline-major-mode-color-icon nil)
 
 ;; which-key
 (unless (package-installed-p 'which-key)
@@ -66,6 +91,12 @@
 (evil-mode 1)
 (unless (package-installed-p 'evil-collection)
   (package-install 'evil-collection))
+
+(add-hook 'evil-visual-state-entry-hook ;; this disables global-hl-line-mode when entering visual mode to improve the clarity of selection
+          (lambda () (global-hl-line-mode -1)))
+
+(add-hook 'evil-visual-state-exit-hook ;; same as above but reenable upon leaving visual mode
+          (lambda () (global-hl-line-mode 1)))
 
 ;; general
 (unless (package-installed-p 'general)
@@ -89,6 +120,10 @@
 (unless (package-installed-p 'nix-mode)
   (package-install 'nix-mode))
 
+;; dired recent files
+(recentf-mode 1)
+(setq recentf-max-saved-items 50)
+
 ;; configure spacebinds
 (spacebinds/leader-keys
  ;; buffer binds
@@ -102,19 +137,26 @@
 
  ;; window binds
  "w" '(:ignore t :wk "Windows")
- ;; Window splits
+ ;; window splits
  "wc" '(evil-window-delete :wk "Close window")
  "wn" '(evil-window-new :wk "New window")
  "ws" '(evil-window-split :wk "Horizontal split window")
  "wv" '(evil-window-vsplit :wk "Vertical split window")
- ;; Window motions
+
+ ;; window motions
  "w <left>" '(evil-window-left :wk "Window left")
  "w <down>" '(evil-window-down :wk "Window down")
  "w <up>" '(evil-window-up :wk "Window up")
  "w <right>" '(evil-window-right :wk "Window right")
  "ww" '(evil-window-next :wk "Goto next window")
- 
- ;; Move Windows
+
+ ;; more window motions but for hjkl
+ "wh" '(evil-window-left :wk "Window left")
+ "wj" '(evil-window-down :wk "Window down")
+ "wk" '(evil-window-up :wk "Window up")
+ "wl" '(evil-window-right :wk "Window right")
+
+ ;; move windows
  "wH" '(buf-move-left :wk "Buffer move left")
  "wJ" '(buf-move-down :wk "Buffer move down")
  "wK" '(buf-move-up :wk "Buffer move up")
@@ -127,13 +169,16 @@
 
  ;; dired
  "d" '(:ignore t :wk "Dired")
- "dd" '(dired :wk "Open dired")
  "dj" '(dired-jump :wk "Dired jump to current")
-
+ "dr" `(recentf-open-files :wk "Dired recently opened files")
+ "dn" `(dired-create-empty-file :wk "Dired create empty file")
+ "df" `(dired-create-directory :wk "Dired create directory")
+ "dd" `(dired-do-delete :wk "Dired delete selection")
+ 
  ;; miscellaneous
  "." '(find-file :wk "Find file")
  "TAB TAB" '(comment-line :wl "Comment lines")
- )
+)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -178,3 +223,7 @@
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'bummer t)
+
+(provide `init)
+;;; init.el ends here
+

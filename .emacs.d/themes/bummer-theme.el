@@ -38,7 +38,7 @@
       (bg2 "#121212")
       (bg3 "#303030")
       (bg4 "#505050")
-      (miscbg "#121212")
+      (miscbg "#090909")
       (builtin "#71d37c")
       (keyword "#e1a3ee")
       (const   "#fb9fb1")
@@ -47,7 +47,7 @@
       (str     "#acc267")
       (type    "#ddb26f")
       (var     "#fb9fb1")
-      (selection "#434343")
+      (selection "#303030")
       (warning   "#fa0c0c")
       (warning2  "#f66151")
       (modelinefg "#ebebeb")
@@ -69,7 +69,7 @@
    `(font-lock-variable-name-face ((,class (:foreground ,var))))
    `(font-lock-warning-face ((,class (:foreground ,warning :background ,bg2))))
    `(term-color-black ((,class (:foreground ,fg2 :background ,unspec))))
-   `(region ((,class (:background ,fg1 :foreground ,bg1))))
+   `(region ((,class (:background ,selection :foreground ,unspec))))
    `(region ((,class (:background ,selection))))
    `(highlight ((,class (:foreground ,fg3 :background ,bg3))))
 	 `(hl-line ((,class (:foreground ,fg3 :background  ,bg2))))
@@ -77,11 +77,11 @@
 	 `(cursor ((,class (:background ,fg1))))
    `(isearch ((,class (:bold t :foreground ,warning :background ,bg3))))
    ;;`(mode-line ((,class (:box (:line-width 1 :color nil) :bold t :foreground ,fg4 :background ,bg2))))
-   `(mode-line-inactive ((,class (:box (:line-width 1 :color nil :style pressed-button) :foreground ,bg3 :background ,bg1 :weight normal))))
-   `(mode-line-buffer-id ((,class (:bold t :foreground ,func :background ,unspec))))
-	 `(mode-line-highlight ((,class (:foreground ,keyword :box nil :weight bold))))
-   `(mode-line-emphasis ((,class (:foreground ,fg1))))
-	 `(vertical-border ((,class (:foreground ,fg3))))
+   ;;`(mode-line-inactive ((,class (:box (:line-width 1 :color nil :style pressed-button) :foreground ,bg3 :background ,bg1 :weight normal))))
+   ;;`(mode-line-buffer-id ((,class (:bold t :foreground ,func :background ,unspec))))
+	 ;;`(mode-line-highlight ((,class (:foreground ,keyword :box nil :weight bold))))
+   ;;`(mode-line-emphasis ((,class (:foreground ,fg1))))
+   `(vertical-border ((,class (:foreground ,bg3 :background ,bg3))))
    `(minibuffer-prompt ((,class (:bold t :foreground ,keyword))))
    `(default-italic ((,class (:italic t))))
 	 `(link ((,class (:foreground ,const :underline t))))
@@ -247,18 +247,13 @@
    `(jde-jave-font-lock-protected-face ((t (:foreground ,keyword))))
    `(jde-java-font-lock-number-face ((t (:foreground ,var))))
    `(doom-modeline ((t (:background ,miscbg :foreground ,modelinefg))))
+   `(doom-modeline-bar ((t (:background ,miscbg :foreground ,modelinefg))))
+   `(doom-modeline-bar-inactive ((t (:background ,bg1 :foreground ,modelinefginactive))))
+   `(mode-line ((t (:foreground ,modelinefg :background ,miscbg))))
+   `(mode-line-inactive ((t (:foreground ,modelinefginactive :background ,bg1))))
    `(line-number ((t (:background ,bg1 :foreground ,bg3))))
    `(yas-field-highlight-face ((t (:background ,selection)))))
-  
-   ;; Legacy
-   (if (< emacs-major-version 22)
-       (custom-theme-set-faces
-        'bummer
-        `(show-paren-match-face ((,class (:background ,warning))))) ;; obsoleted in 22.1, removed 2016
-     (custom-theme-set-faces
-      'bummer
-      `(show-paren-match ((,class (:foreground ,bg1 :background ,str))))
-      `(show-paren-mismatch ((,class (:foreground ,bg1 :background ,warning))))))
+
    ;; emacs >= 26.1
    (when (>= emacs-major-version 26)
      (custom-theme-set-faces
