@@ -88,6 +88,7 @@
 (unless (package-installed-p 'evil)
   (package-install 'evil))
 (require 'evil)
+(evil-set-undo-system 'undo-redo)
 (evil-mode 1)
 (unless (package-installed-p 'evil-collection)
   (package-install 'evil-collection))
@@ -174,6 +175,7 @@
  "dn" `(dired-create-empty-file :wk "Dired create empty file")
  "df" `(dired-create-directory :wk "Dired create directory")
  "dd" `(dired-do-delete :wk "Dired delete selection")
+ "do" `(dired :wk "Open dired")
  
  ;; miscellaneous
  "." '(find-file :wk "Find file")
