@@ -234,6 +234,11 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'bummer t)
 
+;; displays startup time on the echo area
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "Emacs loaded in %s." (emacs-init-time))))
+
 (provide `init)
 ;;; init.el ends here
 
