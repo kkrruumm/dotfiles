@@ -11,7 +11,7 @@
 (package-initialize)
 
 ;; uncomment when adding packages or if this is a new emacs installation
-;; (package-refresh-contents)
+;;(package-refresh-contents)
 
 ;; wacky performance!!
 ;; increase GC threshold for startup
@@ -208,6 +208,25 @@
 
 (electric-pair-mode 1) ;; auto pairs
 ;;(electric-indent-mode -1) ;; disable indenting
+
+;; hungry delete
+(defun my-backward-delete-column-wise ()
+  "Delete 4 spaces if preceded by 4 spaces, otherwise delete 1 character."
+  (interactive)
+  (let ((column (current-column)))
+    (if (and (not (bolp)) ; Not at the beginning of the line
+             (> column 0)
+             ;; Check if the previous 4 characters are spaces
+             (string= (buffer-substring-no-properties
+                       (max (point-min) (- (point) 4)) (point))
+                      "    ")
+             ;; Ensure we are at a 4-space tab stop
+             (zerop (% column 4)))
+        (delete-char -4)
+      (delete-char -1))))
+
+;; Bind it to the Backspace key
+(global-set-key (kbd "DEL") 'my-backward-delete-column-wise)
 
 ;; visual tweaks
 (menu-bar-mode -1)
