@@ -1,6 +1,6 @@
 # .bashrc
 
-export PATH="$HOME/.config/emacs/bin:$PATH"
+# export PATH="$HOME/.config/emacs/bin:$PATH"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -14,8 +14,10 @@ export HISTSIZE=
 alias ls='ls --group-directories-first --color=auto'
 alias grep="grep --color=auto"
 
-alias em="emacs"
 alias v="vim"
+alias m="man"
+alias c="cat"
+alias e="emacs"
 
 PS1='($?) \u@\h \W > '
 #PS1='\e[1;37m($?) \e[1;32m\u@\h \e[1;37m\W > \e[m'
