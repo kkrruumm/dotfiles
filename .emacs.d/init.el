@@ -42,7 +42,7 @@
 ;; spell checking
 (add-hook 'text-mode-hook 'flyspell-mode) ;; spellcheck for org, markdown, all that
 (add-hook 'find-file-hook (lambda () (when (eq major-mode 'fundamental-mode) (flyspell-mode 1)))) ;; fundamental mode, so applies to mdx and various other non coding things
-(add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; this spellchecks only comments and strings if checking code
+;; (add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; this spellchecks only comments and strings if checking code
 
 ;; scope lines
 (unless (package-installed-p 'indent-bars)
@@ -210,7 +210,7 @@
 ;;(electric-indent-mode -1) ;; disable indenting
 
 ;; hungry delete
-(defun my-backward-delete-column-wise ()
+(defun backward-delete-column-wise ()
   "Delete 4 spaces if preceded by 4 spaces, otherwise delete 1 character."
   (interactive)
   (let ((column (current-column)))
@@ -226,7 +226,7 @@
       (delete-char -1))))
 
 ;; Bind it to the Backspace key
-(global-set-key (kbd "DEL") 'my-backward-delete-column-wise)
+(global-set-key (kbd "DEL") 'backward-delete-column-wise)
 
 ;; visual tweaks
 (menu-bar-mode -1)
