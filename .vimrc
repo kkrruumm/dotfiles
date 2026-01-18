@@ -1,0 +1,10 @@
+syntax on
+colorscheme bummer
+set number
+set termguicolors
+set showmatch
+set ruler
+set smarttab
+set shiftwidth=4
+set tabstop=4
+set expandtab
