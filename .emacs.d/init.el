@@ -72,6 +72,11 @@
   (package-install 'flycheck))
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
+;; this provides the popups when the cursor is over a flycheck-highlighted region
+(unless (package-installed-p 'flycheck-popup-tip)
+  (package-install 'flycheck-popup-tip))
+(flycheck-popup-tip-mode +1)
+
 ;; pretty bar
 (unless (package-installed-p 'doom-modeline)
   (package-install 'doom-modeline))
@@ -261,3 +266,9 @@
 (provide `init)
 ;;; init.el ends here
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

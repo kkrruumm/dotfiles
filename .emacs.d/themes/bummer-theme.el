@@ -300,6 +300,7 @@
 
 ;; flycheck stuff
 (custom-set-faces
+ '(popup-tip-face ((t (:background "#121212" :foreground "#ffffff"))))
  '(flycheck-info ((t (:underline (:color "black" :style wave) :foreground unspecified))))
  '(flycheck-error ((t (:underline (:color "black" :style wave) :foreground unspecified))))
  '(flycheck-warning ((t (:underline (:color "black" :style wave) :foreground unspecified)))))
