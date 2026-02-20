@@ -10,16 +10,12 @@
     '("elpa" . "https://elpa.gnu.org/packages/"))
 (package-initialize)
 
+;; max gc threshhold for startup
+(setq gc-cons-threshold most-positive-fixnum)
+(setq gc-cons-percentage 1.0)
+
 ;; uncomment when adding packages or if this is a new emacs installation
 ;;(package-refresh-contents)
-
-;; wacky performance!!
-;; increase GC threshold for startup
-(setq gc-cons-threshold 100000000)
-(setq read-process-output-max 1048576)
-
-;; disable resize frames since we're TUI only
-(setq frame-inhibit-implied-resize t)
 
 ;; let there be highlight (this is only really here for lua)
 (unless (package-installed-p 'treesit-auto)
@@ -212,6 +208,7 @@
  '(package-selected-packages nil))
 
 (electric-pair-mode 1) ;; auto pairs
+(setq-default electric-indent-chars '(?\n ?\^?)) ;; triggered by only newlines and del
 ;;(electric-indent-mode -1) ;; disable indenting
 
 ;; hungry delete
@@ -229,6 +226,10 @@
              (zerop (% column 4)))
         (delete-char -4)
       (delete-char -1))))
+
+(add-hook 'c-mode-hook
+    (lambda ()
+        (local-set-key (kbd "DEL") 'backward-delete-column-wise)))
 
 ;; Bind it to the Backspace key
 (global-set-key (kbd "DEL") 'backward-delete-column-wise)
@@ -254,9 +255,32 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq-default standard-indent 4)
+(setq-default c-basic-offset 4)
+
+;; disable resize frames since we're TUI only
+(setq frame-inhibit-implied-resize t)
+
+;; y/n instead of yes/no
+(setq read-answer-short t)
+(if (boundp 'use-short-answers)
+    (setq use-short-answers t)
+  (advice-add 'yes-or-no-p :override #'y-or-n-p))
+
+;; update less often
+(setq which-func-update-delay 1.0)
+
+;; wrap on whitespace instead of in the middle of a word
+(setq-default word-wrap t)
+
+;; keep track of cursor position in files
+(save-place-mode 1)
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'bummer t)
+
+;; restore gc to controlled values
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max 1048576)
 
 ;; displays startup time on the echo area
 (add-hook 'emacs-startup-hook
@@ -264,11 +288,5 @@
             (message "Emacs loaded in %s." (emacs-init-time))))
 
 (provide `init)
-;;; init.el ends here
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;;; init.el ends here
