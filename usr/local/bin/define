@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# thanks bread
+query=$(curl -s "https://api.dictionaryapi.dev/api/v2/entries/en_US/${1}")
+checkdef=$(printf "%s" "$query" | jq -r '.title' 2>&1)
+
+[ -z "$query" ] &&
+    { printf "%s\n" "No definition found." ; exit 1 ; }
+
+[ "$checkdef" = 'No Definitions Found' ] &&
+    { printf "%s\n" "No definitions found." ; exit 1 ; }
+
+output=$(printf "%s" "$query" | jq -r '.[0].meanings[] | "\(.partOfSpeech): \(.definitions[0].definition)\n"')
+
+printf "%s\n" "$output"
