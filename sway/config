@@ -22,7 +22,7 @@ bindsym $mod+Tab exec ~/.config/fuzzel/windowlist.sh
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Wallpapers/wallhaven-9odgw1.png fill
+output * bg ~/Pictures/Wallpapers/ahwpuxwp5ltd1.jpeg fill
 #
 # Example configuration:
 #
@@ -217,31 +217,40 @@ bindsym $mod+r mode "resize"
 # Status Bar:
 #
 # Read `man 5 sway-bar` for more information about this section.
-#bar {
-#    position top
-#    height 27 
-#    tray_padding 4 
+bar {
+    position top
+    height 27
+    tray_padding 5
 
-#    font monospace 10
+    font monospace 10
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-#    status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
+    # status_command while date +'%Y-%m-%d %I:%M:%S %p'; do sleep 1; done
 
-#    colors {
-#        statusline #ffffff
-#        background #000000
-#        inactive_workspace #000000 #000000 #5c5c5c
-#	active_workspace #000000 #000000 #5c5c5c
-#	focused_workspace #000000 #000000 #ffffff	
-#    }
-#}
+    status_command i3blocks
+    separator_symbol " - "
 
-output DP-5 pos 2560 0 res 2560x1440@240.000Hz
-workspace 1 output DP-5
+    colors {
+        statusline #ffffff
+        background #000000
+        inactive_workspace #000000 #000000 #5c5c5c
+        active_workspace #000000 #000000 #5c5c5c
+        focused_workspace #000000 #000000 #ffffff
+    }
+}
 
-output HDMI-A-2 pos 0 0 res 2560x1440
-workspace 2 output HDMI-A-2
+output "AOC AG276QZD2 2OMQ9JA000926" {
+    resolution 2560x1440@240.000Hz
+    position 2560 0
+}
+workspace 1 output "AOC AG276QZD2 2OMQ9JA000926"
+
+output "Lenovo Group Limited L24q-20 U5V0VWBN" {
+    resolution 2560x1440
+    position 0 0
+}
+workspace 2 output "Lenovo Group Limited L24q-20 U5V0VWBN"
 
 gaps inner 3
 gaps outer 3
@@ -254,7 +263,6 @@ exec /usr/libexec/polkit-gnome-authentication-agent-1
 exec /usr/libexec/xdg-desktop-portal -r & /usr/libexec/xdg-desktop-portal-wlr & /usr/libexec/xdg-desktop-portal-gtk
 exec fnott
 exec_always --no-startup-id gnome-keyring-daemon --start
-exec_always /usr/local/bin/waybar-launcher
 
 seat seat0 xcursor_theme Bibata-Original-Classic 24
 
@@ -267,6 +275,8 @@ exec_always {
     gsettings set $gnome-schema color-scheme 'prefer-dark'
 }
 
+# compose key
+input * xkb_options compose:ralt
 
 # wm colors
 
