@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# find the GPU junction (hotspot) temperature
+for i in /sys/class/hwmon/hwmon*/temp*_label ; do
+    read -r value < "$i"
+
+    [ "$value" = 'junction' ] &&
+        { device="$i" ; unset value ; break ; }
+done
+
+# remove label from end of string and add input
+device="${device%_*}"
+device="${device}_input"
+
+# loop here so i3blocks can persist this script as opposed to running the above loop every invocation
+while : ; do
+    read -r raw_temp < "$device"
+    celsius="$((raw_temp / 1000))"
+
+    printf "%s\n" "G: ${celsius}°C"
+    sleep 5 
+done

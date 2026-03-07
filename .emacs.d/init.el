@@ -257,6 +257,14 @@
 (setq-default standard-indent 4)
 (setq-default c-basic-offset 4)
 
+;; fuck tab characters AND 8 space tabs
+(defun fixtabs-go-mode-hook ()
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq go-tab-width 4))
+
+(add-hook 'go-mode-hook 'fixtabs-go-mode-hook)
+
 ;; disable resize frames since we're TUI only
 (setq frame-inhibit-implied-resize t)
 

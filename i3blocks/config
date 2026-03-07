@@ -1,0 +1,36 @@
+# i3blocks configuration file
+#
+# The i3blocks man page describes the usage of the binary,
+# and its website describes the configuration:
+#
+#     https://vivien.github.io/i3blocks
+
+
+# Global properties
+separator=true
+separator_block_width=15
+
+[window]
+command=~/.config/i3blocks/scripts/focused_window
+align=center
+interval=persist
+
+[scratchpad]
+command=~/.config/i3blocks/scripts/scratchpad_count
+align=center
+interval=persist
+
+[cpu]
+command=~/.config/i3blocks/scripts/cpu_temperature
+align=center
+interval=persist
+
+[gpu]
+command=~/.config/i3blocks/scripts/gpu_temperature
+align=center
+interval=persist
+
+[time]
+command=date '+%Y-%m-%d %-I:%M %p %A'
+align=center
+interval=2

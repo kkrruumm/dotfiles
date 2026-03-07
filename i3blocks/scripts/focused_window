@@ -1,0 +1,5 @@
+#!/bin/sh
+
+swaymsg -t subscribe -m '["window"]' | while read -r line; do
+    printf "%s" "$line" | jq -r '.. | select(.focused? == true) | .name'
+done
