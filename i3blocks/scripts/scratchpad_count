@@ -5,6 +5,9 @@
 swaymsg -t subscribe -m '["window"]' | while read -r line ;  do
     count=$(swaymsg -t get_tree | jq '.nodes[].nodes[] | select(.name == "__i3_scratch") | .focus | length')
 
-    [ "$count" -gt 0 ] &&
+    if [ "$count" -gt 0 ]; then
         printf "%s\n" "S: ${count}"
+    else
+        printf "%s\n" ""
+    fi
 done

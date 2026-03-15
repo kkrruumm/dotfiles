@@ -1,0 +1,17 @@
+#!/bin/sh
+printf "%s\n" "VPN: nil"
+
+ip monitor link | while read -r line; do
+    case "$line" in
+        *mullvad*) # switches are the only way to * in posix sh
+            case "$line" in
+                *Deleted*) printf "%s\n" 'VPN: nil';;
+                *)
+                    vpn_interface=${line#*: } # removes, for example, '38: ' from the beginning of the monitor output
+                    vpn_interface=${vpn_interface%%: <*} # removes everything until and including : < from the end of the monitor output
+                    printf "%s\n" "VPN: $vpn_interface"
+                ;;
+            esac
+        ;;
+    esac
+done
