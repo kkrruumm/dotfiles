@@ -1,0 +1,48 @@
+#!/bin/sh
+
+# i have a thinkpad t480 so have 2 batteries
+# there's not really a point in this script persisting,
+# so it's instead invoked every 60 seconds on my laptop.
+batt_0="/sys/class/power_supply/BAT0"
+batt_1="/sys/class/power_supply/BAT1"
+
+get_val() {
+    [ -f "$1" ] &&
+        { read -r val < "$1" && echo "$val" || echo 0 ; } || echo 0
+}
+
+# get energy values (using energy_now/full for Wh)
+maxcap_0=$(get_val "${batt_0}/energy_full")
+maxcap_1=$(get_val "${batt_1}/energy_full")
+current_charge_0=$(get_val "${batt_0}/energy_now")
+current_charge_1=$(get_val "${batt_1}/energy_now")
+
+# get power draw (system-wide consumption)
+pwr_0=$(get_val "${batt_0}/power_now")
+pwr_1=$(get_val "${batt_1}/power_now")
+
+# calculate totals
+maxcap=$((maxcap_0 + maxcap_1))
+current_charge=$((current_charge_0 + current_charge_1))
+total_pwr=$((pwr_0 + pwr_1))
+
+# get percentage
+if [ "$maxcap" -gt 0 ]; then
+    percent=$(( (current_charge * 100) / maxcap ))
+else
+    percent=0
+fi
+
+# calculate time remaining
+if [ "$total_pwr" -gt 0 ]; then
+    # total minutes = (current energy / power draw) * 60
+    # multiply by 60 first to keep it in integer math
+    minutes_left=$(( (current_charge * 60) / total_pwr ))
+    
+    hours=$(( minutes_left / 60 ))
+    mins=$(( minutes_left % 60 ))
+    
+    time_str=$(printf "(%dh %02dm)" "$hours" "$mins")
+fi
+
+printf "%s\n" "BATT: ${percent}% ${time_str}"
