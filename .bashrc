@@ -17,9 +17,10 @@ alias grep="grep --color=auto"
 alias v="vim"
 alias m="man"
 alias c="cat"
-alias e="emacs"
+alias e="emacsclient -t"
+alias g="gcc"
+alias b="btop"
 
-PS1='($?) \u@\h \W > '
-#PS1='\e[1;37m($?) \e[1;32m\u@\h \e[1;37m\W > \e[m'
+PS1='($?) \h $([ "$PWD" != "$HOME" ] && printf "%s" "../")\W > '
 
 printf "%s\n\n" "$(fortune)"
