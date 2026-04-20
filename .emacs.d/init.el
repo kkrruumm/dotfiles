@@ -257,7 +257,7 @@
 (setq-default standard-indent 4)
 (setq-default c-basic-offset 4)
 
-;; fuck tab characters AND 8 space tabs
+;; god dammit fuck tab characters AND 8 space tabs
 (defun fixtabs-go-mode-hook ()
   (setq indent-tabs-mode nil)
   (setq tab-width 4)
@@ -283,6 +283,9 @@
 ;; keep track of cursor position in files
 (save-place-mode 1)
 
+;; emacsclient file.xyz should persist in the buffer list
+(setq server-kill-new-buffers nil)
+
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 (load-theme 'bummer t)
 
@@ -298,3 +301,9 @@
 (provide `init)
 
 ;;; init.el ends here
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
