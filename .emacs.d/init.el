@@ -15,7 +15,7 @@
 (setq gc-cons-percentage 1.0)
 
 ;; uncomment when adding packages or if this is a new emacs installation
-;;(package-refresh-contents)
+(package-refresh-contents)
 
 ;; let there be highlight (this is only really here for lua)
 (unless (package-installed-p 'treesit-auto)
@@ -39,6 +39,44 @@
 (add-hook 'text-mode-hook 'flyspell-mode) ;; spellcheck for org, markdown, all that
 (add-hook 'find-file-hook (lambda () (when (eq major-mode 'fundamental-mode) (flyspell-mode 1)))) ;; fundamental mode, so applies to mdx and various other non coding things
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; this spellchecks only comments and strings if checking code
+
+;; dashboard
+(unless (package-installed-p 'dashboard)
+  (package-install 'dashboard))
+(require 'dashboard)
+(setq dashboard-banner-logo-title nil)
+(setq dashboard-center-content t)
+(setq dashboard-vertically-center-content t)
+(setq dashboard-items '((recents   . 10)
+                        (projects  . 10)
+                        (bookmarks . 5)))
+(setq dashboard-projects-backend 'project-el)
+
+;; dashboard needs this to work with emacsclient
+(setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+(dashboard-setup-startup-hook)
+
+;; refresh the dashboard buffer every time a client connects to make sure the vertical centering works
+(add-hook 'server-after-make-frame-hook
+          (lambda ()
+            (when (get-buffer "*dashboard*")
+              (with-current-buffer "*dashboard*"
+                (dashboard-refresh-buffer)))))
+
+;; auto-register every subdirectory of my projects dir as a project
+(defun my/register-projects-directory (parent-dir)
+  (let ((parent (expand-file-name parent-dir)))
+    (when (file-directory-p parent)
+      (dolist (dir (directory-files parent t "^[^.]"))
+        (when (file-directory-p dir)
+          (project-remember-project (cons 'transient dir)))))))
+
+(with-eval-after-load 'project
+  (my/register-projects-directory "~/Documents/projects"))
+
+;; magit! magit! magit!
+(unless (package-installed-p 'magit)
+  (package-install 'magit))
 
 ;; scope lines
 (unless (package-installed-p 'indent-bars)
@@ -98,6 +136,7 @@
 (evil-mode 1)
 (unless (package-installed-p 'evil-collection)
   (package-install 'evil-collection))
+(evil-collection-init)
 
 (add-hook 'evil-visual-state-entry-hook ;; this disables global-hl-line-mode when entering visual mode to improve the clarity of selection
           (lambda () (global-hl-line-mode -1)))
@@ -109,6 +148,7 @@
 (unless (package-installed-p 'general)
   (package-install 'general))
 (general-evil-setup)
+(general-override-mode 1)
 
 ;; configure general
 (general-create-definer spacebinds/leader-keys
@@ -177,15 +217,27 @@
  ;; dired
  "d" '(:ignore t :wk "Dired")
  "dj" '(dired-jump :wk "Dired jump to current")
+ "dp" '((lambda () (interactive) (dired "~/Documents/projects")) :wk "Dired jump to projects")
  "dr" `(recentf-open-files :wk "Dired recently opened files")
  "dn" `(dired-create-empty-file :wk "Dired create empty file")
  "df" `(dired-create-directory :wk "Dired create directory")
  "dd" `(dired-do-delete :wk "Dired delete selection")
  "do" `(dired :wk "Open dired")
+
+ ;; magit
+ "g" '(:ignore t :wk "Magit")
+ "gg" '(magit-status :wk "Magit status")
+
+ ;; bookmarks
+ "m" '(:ignore t :wk "Bookmarks")
+ "mm" '(bookmark-set :wk "Set bookmark")
+ "mj" '(bookmark-jump :wk "Jump to bookmark")
+ "ml" '(bookmark-bmenu-list :wk "List bookmarks")
  
  ;; miscellaneous
  "." '(find-file :wk "Find file")
  "TAB TAB" '(comment-line :wl "Comment lines")
+ "bd" '(dashboard-open :wk "Open dashboard")
 )
 
 ;; allows me to hit escape twice to exit M-x as opposed to using C-g
