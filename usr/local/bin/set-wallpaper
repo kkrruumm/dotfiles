@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# this is meant to be run by a thunar custom action
+ln -sf "$1" "${HOME}/.config/sway/wallpaper"
+swaymsg output "*" bg "$1" fill

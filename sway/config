@@ -22,7 +22,7 @@ bindsym $mod+Tab exec ~/.config/fuzzel/windowlist.sh
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg ~/Pictures/Wallpapers/ahwpuxwp5ltd1.jpeg fill
+output * bg ~/.config/sway/wallpaper fill
 #
 # Example configuration:
 #
