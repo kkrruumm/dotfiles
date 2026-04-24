@@ -1,0 +1,57 @@
+# bummer
+#
+#   base00 #070707 -> 232  (background)
+#   base01 #121212 -> 233  (alt background / status)
+#   base02 #303030 -> 236  (selection / splits)
+#   base03 #505050 -> 239  (comments / muted)
+#   base04 #b0b0b0 -> 249  (statusline fg)
+#   base05 #d0d0d0 -> 252  (foreground)
+#   base07 #f5f5f5 -> 255  (bright fg)
+#   base08 #fb9fb1 -> 217  (red / identifiers)
+#   base09 #eda987 -> 216  (orange / numbers)
+#   base0A #ddb26f -> 179  (yellow / search / types)
+#   base0B #acc267 -> 149  (green / strings)
+#   base0C #12cfc0 -> 44   (cyan / special)
+#   base0D #6fc2ef -> 111  (blue / functions)
+#   base0E #e1a3ee -> 183  (magenta / statements)
+
+# default text (fg on bg)
+set color_win_fg=252
+set color_win_bg=232
+set color_win_cur=111
+set color_win_dir=183
+
+# currently playing track
+set color_win_cur_sel_fg=232
+set color_win_cur_sel_bg=179
+set color_win_inactive_cur_sel_fg=232
+set color_win_inactive_cur_sel_bg=179
+
+# selected row (cursor)
+set color_win_sel_fg=255
+set color_win_sel_bg=236
+set color_win_inactive_sel_fg=252
+set color_win_inactive_sel_bg=236
+
+# window title / tab bar
+set color_win_title_fg=249
+set color_win_title_bg=233
+
+# command line
+set color_cmdline_fg=252
+set color_cmdline_bg=232
+
+# error / info messages in cmdline
+set color_error=217
+set color_info=149
+
+# status line (bottom)
+set color_statusline_fg=249
+set color_statusline_bg=233
+set color_statusline_attr=default
+
+# track separator / matched text
+set color_separator=239
+set color_titleline_fg=179
+set color_titleline_bg=233
+set color_titleline_attr=bold
