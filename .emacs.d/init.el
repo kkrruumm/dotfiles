@@ -64,15 +64,29 @@
                 (dashboard-refresh-buffer)))))
 
 ;; auto-register every subdirectory of my projects dir as a project
-(defun my/register-projects-directory (parent-dir)
+(defun register-projects-directory (parent-dir)
   (let ((parent (expand-file-name parent-dir)))
     (when (file-directory-p parent)
       (dolist (dir (directory-files parent t "^[^.]"))
         (when (file-directory-p dir)
           (project-remember-project (cons 'transient dir)))))))
 
+;; update the terminal title with filename so i don't lose track of stuff in my sway tabs
+(defun update-terminal-title ()
+  (when (and (buffer-file-name)
+             (eq (current-buffer) (window-buffer (selected-window))))
+    (send-string-to-terminal
+     (format "\e]2;emacs - %s\a" (buffer-file-name)))))
+
+(add-hook 'window-selection-change-functions
+          (lambda (_frame) (update-terminal-title)))
+(add-hook 'find-file-hook #'update-terminal-title)
+
+(add-hook 'buffer-list-update-hook #'update-terminal-title)
+(add-hook 'window-configuration-change-hook #'update-terminal-title)
+
 (with-eval-after-load 'project
-  (my/register-projects-directory "~/Documents/projects"))
+  (register-projects-directory "~/Documents/projects"))
 
 ;; magit! magit! magit!
 (unless (package-installed-p 'magit)
