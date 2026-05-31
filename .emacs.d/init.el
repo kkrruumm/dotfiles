@@ -278,6 +278,7 @@
  "ol" '(org-insert-link :wk "Org insert link")
  "oL" '(org-toggle-link-display :wk "Toggle raw links")
  "of" '(org-shifttab :wk "Global fold/unfold")
+ "ot" '(org-toggle-checkbox :wk "Toggle checkboxes")
  
  ;; miscellaneous
  "." '(find-file :wk "Find file")
@@ -368,6 +369,11 @@
 
 ;; without this, since im using evil mode, :q will not trigger a reset to my original terminal background color
 (evil-ex-define-cmd "q" (lambda ()
+                          (interactive)
+                          (reset-terminal-bg)
+                          (save-buffers-kill-terminal)))
+
+(evil-ex-define-cmd "qa" (lambda ()
                           (interactive)
                           (reset-terminal-bg)
                           (save-buffers-kill-terminal)))
