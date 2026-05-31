@@ -21,6 +21,9 @@
 (unless (package-installed-p 'treesit-auto)
   (package-install 'treesit-auto))
 
+;; ricer slop (easier to read)
+(set-frame-font "JetBrains Mono-10" nil t)
+
 ;; disabling treesit-auto so it doesn't try to pull in anything else post-lua
 (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode)) ;; this explicitly enables treesitter for lua, without treesitter lua is not well highlighted
 
@@ -39,6 +42,17 @@
 (add-hook 'text-mode-hook 'flyspell-mode) ;; spellcheck for org, markdown, all that
 (add-hook 'find-file-hook (lambda () (when (eq major-mode 'fundamental-mode) (flyspell-mode 1)))) ;; fundamental mode, so applies to mdx and various other non coding things
 ;; (add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; this spellchecks only comments and strings if checking code
+
+;; markdown-replacer-9000 (buy now!)
+(use-package org
+  :ensure nil
+  :hook
+  (org-mode . org-indent-mode)
+  (org-mode . visual-line-mode)
+  :config
+  (setq org-startup-folded 'content ;; start folded
+        org-src-fontify-natively t ;; syntax highlighting for code blocks
+        org-src-tab-acts-natively t))
 
 ;; dashboard
 (unless (package-installed-p 'dashboard)
@@ -158,18 +172,16 @@
 (add-hook 'evil-visual-state-exit-hook ;; same as above but reenable upon leaving visual mode
           (lambda () (global-hl-line-mode 1)))
 
+(evil-define-key 'normal org-mode-map (kbd "RET") #'org-open-at-point) ;; this is necessary so i can open links and stuff in org docs
+
+(with-eval-after-load 'evil
+  (evil-define-key 'normal org-mode-map (kbd "TAB") #'org-cycle)) ;; expanding org headers in normal mode
+
 ;; general
 (unless (package-installed-p 'general)
   (package-install 'general))
 (general-evil-setup)
 (general-override-mode 1)
-
-;; configure general
-(general-create-definer spacebinds/leader-keys
-  :states '(normal insert visual emacs)
-  :keymaps 'override
-  :prefix "SPC"
-  :global-prefix "M-SPC")
 
 ;; language support
 (unless (package-installed-p 'go-mode)
@@ -181,9 +193,20 @@
 (unless (package-installed-p 'nix-mode)
   (package-install 'nix-mode))
 
-;; dired recent files
+;; dired
 (recentf-mode 1)
 (setq recentf-max-saved-items 50)
+
+;; buffer settings
+(setq ibuffer-auto-mode t) ;; automatically refresh buffer list when visiting it
+(add-hook 'ibuffer-mode-hook #'ibuffer-auto-mode)
+
+;; configure general
+(general-create-definer spacebinds/leader-keys
+  :states '(normal insert visual emacs)
+  :keymaps 'override
+  :prefix "SPC"
+  :global-prefix "M-SPC")
 
 ;; configure spacebinds
 (spacebinds/leader-keys
@@ -195,6 +218,7 @@
  "bn" '(next-buffer :wk "Next buffer")
  "bp" '(previous-buffer :wk "Previous buffer")
  "br" '(revert-buffer :wk "Reload buffer")
+ "bx" '((lambda () (interactive) (kill-current-buffer) (evil-window-delete)) :wk "Buffer nuke")
 
  ;; window binds
  "w" '(:ignore t :wk "Windows")
@@ -247,6 +271,13 @@
  "mm" '(bookmark-set :wk "Set bookmark")
  "mj" '(bookmark-jump :wk "Jump to bookmark")
  "ml" '(bookmark-bmenu-list :wk "List bookmarks")
+
+ ;; org
+ "o" '(:ignore t :wk "Org")
+ "oe" '(org-export-dispatch :wk "Org export")
+ "ol" '(org-insert-link :wk "Org insert link")
+ "oL" '(org-toggle-link-display :wk "Toggle raw links")
+ "of" '(org-shifttab :wk "Global fold/unfold")
  
  ;; miscellaneous
  "." '(find-file :wk "Find file")
@@ -282,13 +313,13 @@
   "Delete 4 spaces if preceded by 4 spaces, otherwise delete 1 character."
   (interactive)
   (let ((column (current-column)))
-    (if (and (not (bolp)) ; Not at the beginning of the line
+    (if (and (not (bolp)) ; not at the beginning of the line
              (> column 0)
-             ;; Check if the previous 4 characters are spaces
+             ;; check if the previous 4 characters are spaces
              (string= (buffer-substring-no-properties
                        (max (point-min) (- (point) 4)) (point))
                       "    ")
-             ;; Ensure we are at a 4-space tab stop
+             ;; ensure we are at a 4-space tab stop
              (zerop (% column 4)))
         (delete-char -4)
       (delete-char -1))))
@@ -297,7 +328,7 @@
     (lambda ()
         (local-set-key (kbd "DEL") 'backward-delete-column-wise)))
 
-;; Bind it to the Backspace key
+;; bind it to the backspace key
 (global-set-key (kbd "DEL") 'backward-delete-column-wise)
 
 ;; visual tweaks
@@ -314,8 +345,43 @@
     :slant 'italic)
 (setq-default line-spacing 0.15)
 
+;; set terminal background on startup to get rid of the border, restore on close
+(defun set-terminal-bg (color &optional frame)
+  (let ((frame (or frame (selected-frame))))
+    (unless (display-graphic-p frame)
+      (send-string-to-terminal
+       (format "\033]11;%s\033\\" color)
+       frame))))
+
+(defun reset-terminal-bg (&optional frame)
+  (let ((frame (or frame (selected-frame))))
+    (unless (display-graphic-p frame)
+      (send-string-to-terminal "\033]111\033\\" frame))))
+
+;; when a new client frame is created
+(add-hook 'server-after-make-frame-hook
+          (lambda () (set-terminal-bg "#060606"))) ;; this doesn't match my theme because i use xterm-256color on foot so the colors end up a little bit different
+
+;; when emacsclient finishes
+(add-hook 'server-done-hook
+          (lambda () (reset-terminal-bg)))
+
+;; without this, since im using evil mode, :q will not trigger a reset to my original terminal background color
+(evil-ex-define-cmd "q" (lambda ()
+                          (interactive)
+                          (reset-terminal-bg)
+                          (save-buffers-kill-terminal)))
+
+(evil-ex-define-cmd "wq" (lambda ()
+                           (interactive)
+                           (save-buffer)
+                           (reset-terminal-bg)
+                           (save-buffers-kill-terminal)))
+
 ;; actually scroll instead of changing pages
-(setq scroll-conservatively 101)
+(setq scroll-margin 6 ;; space at the bottom of the buffer when EOF is reached
+      scroll-conservatively 101)
+(setq next-line-add-newlines nil)
 
 ;; fuck tab characters
 (setq-default indent-tabs-mode nil)
@@ -358,11 +424,6 @@
 ;; restore gc to controlled values
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max 1048576)
-
-;; displays startup time on the echo area
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "Emacs loaded in %s." (emacs-init-time))))
 
 (provide `init)
 
