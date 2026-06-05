@@ -12,7 +12,7 @@
 (require 'evil-settings)
 (require 'keybind-settings)
 
-;; ── restore GC to sane runtime values ───────────────────────────────
+;; restore GC to sane runtime values
 (setq gc-cons-threshold 100000000)      ; ~100 MB
 (setq read-process-output-max 1048576)  ; 1 MB — helps LSP throughput
 

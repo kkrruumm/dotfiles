@@ -77,6 +77,12 @@
  "oL" '(org-toggle-link-display :wk "Toggle raw links")
  "ot" '(org-toggle-checkbox :wk "Toggle checkboxes")
 
+ "h" '(:ignore t :wk "fold")
+ "hb" '(hs-hide-block :wk "Hide block")
+ "hs" '(hs-show-block :wk "Unhide block")
+ "hA" '(hs-hide-all :wk "Hide all blocks")
+ "has" '(hs-show-all :wk "Unhide all blocks")
+
  "."       '(find-file :wk "Find file")
  "TAB TAB" '(comment-line :wk "Comment lines"))
 
